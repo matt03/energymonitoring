@@ -1,0 +1,48 @@
+<?php $__env->startSection('contents'); ?>
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        Add Comments for Sample <?php echo $cat[0]->name; ?>
+
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("sampleTest"); ?>'>
+            back to list <i class="fa fa-list"></i>
+        </a>
+    </header>
+    <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> <?php echo $cat[0]->name; ?> description addition.
+        </div>
+        <?php endif; ?>
+        <form action="<?php echo url('sampleTest/comment'); ?>/<?php echo $cat[0]->id; ?>"  method="post">
+
+            <div class="entry">
+                <?php foreach($errors->all() as $error): ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php endforeach; ?>
+
+                <div class="form-group">
+                    <div class="col-md-6"> Comments <br><br><textarea rows="6" cols="70" name="comment" required="required" class="form-control" ></textarea> </div>
+
+                </div>
+
+                <hr><br>
+                <hr><br>
+                <div class="sep" style="height: 30px"></div>
+                <div class="col-md-6" style="margin-top: 30px;" >
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                    <a class="btn btn-danger" href="<?php echo url('sampleTest'); ?>"> Cancel</a>
+                </div>
+            </div>
+            <!--     <div class="clear"></div>-->
+        </form>
+    </div>
+
+</section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

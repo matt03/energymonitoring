@@ -1,0 +1,88 @@
+<?php $__env->startSection('contents'); ?>
+
+
+
+    <div class="panel panel-success">
+        <?php if($alert = Session::get('alert-success')): ?>
+        <div class="alert alert-success">
+            <?php echo $alert; ?>
+
+        </div>
+        <?php endif; ?>
+
+        <div class="panel-heading">List of samples Tests
+
+
+        </div>
+        <div class="panel-body">
+
+            <table  class="display table table-bordered table-striped" id="dynamic-table">
+                <thead>
+                <?php $j=0;?>
+                <tr>
+                    <th>#</th>
+                    <th>Sample Id</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Procedure</th>
+                    <th>Comments</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                <?php if(Auth::user()->role == "1"): ?>
+                    <th>Results</th>
+                    <th>Result Date</th>
+                <?php endif; ?>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                <?php foreach($test as $test): ?>
+                 <tr>
+                      <td><?php echo ++$j; ?></td>
+                      <td><?php echo $test->sample_test_Id; ?></td>
+                      <td><?php echo $test->patient->dob; ?></td>
+                      <td><?php echo $test->patient->gender; ?></td>
+                      <td><?php echo $test->procedure->name; ?></td>
+                      <td><?php if($test->sampleTest->comments): ?><?php echo $test->sampleTest->comments; ?><?php endif; ?> </td>
+                      <td><?php if($test->sampleTest->macroscopically): ?><?php echo $test->sampleTest->macroscopically; ?><?php endif; ?> </td>
+                      <td><?php if($test->sampleTest->macroscopically): ?><?php echo $test->sampleTest->process_date; ?><?php endif; ?> </td>
+                     <?php if(Auth::user()->role == "1"): ?>
+                      <td><?php if($test->sampleTest->results): ?><?php echo $test->sampleTest->results; ?><?php endif; ?> </td>
+                      <td><?php if($test->sampleTest->results): ?><?php echo $test->sampleTest->updated_at; ?><?php endif; ?> </td>
+                     <?php endif; ?>
+                      <td class="table-condensed col-xs-pull-2" id="<?php echo $test->id; ?>">
+
+                          <div class="btn-group btn-group-xs" >
+
+                             <a class="btn btn-primary" title="Add Sample description" href='<?php echo url("sampleTest/description/{$test->sample_test_Id}"); ?>'>
+                                 <i class="fa fa-plus-circle"></i> Description
+                             </a>
+                             <a class="btn btn-success"  title="Add Comments" href='<?php echo url("sampleTest/comment/{$test->sample_test_Id}"); ?>'>
+                             <i class="fa fa-plus-circle"></i> Comments
+                             </a>
+                             <?php if(Auth::user()->role == "1"): ?>
+                             <a class="btn btn-danger"  title="Add Sample result" href='<?php echo url("sampleTest/result/{$test->sample_test_Id}"); ?>'>
+                                 <i class="fa fa-plus-circle"></i> Results
+                             </a>
+                             <?php endif; ?>
+                         </div>
+                     </td>
+                 </tr>
+                <?php endforeach; ?>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+
+    <script>
+<!--     -->
+    </script>
+
+    <!--dynamic table initialization -->
+    <script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

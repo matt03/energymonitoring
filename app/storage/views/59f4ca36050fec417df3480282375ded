@@ -1,0 +1,133 @@
+<?php $__env->startSection('contents'); ?>
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        Register Sample:
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("sample"); ?>'>
+            back to list <i class="fa fa-list"></i>
+        </a>
+    </header>
+    <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong>  <?php echo $msg; ?>.
+        </div>
+        <?php endif; ?>
+        <form action="<?php echo url('sample/edit'); ?>" method="post" enctype="multipart/form-data" files="true">
+            <h3><u> Patient Details. </u></h3>
+            <br>
+            <div class="entry">
+                <?php foreach($errors->all() as $error): ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php endforeach; ?>
+
+                <div class="form-group">
+                    <div class="col-md-3" > Patient Name:
+                        <?php echo Form::select('patient',array('0'=>"<?php echo e($sample->id); ?>")+Patient::orderBy('id','ASC')->get()->lists('firstName','id'),'',array('class'=>'form-control','required'=>'requiered')); ?><br>
+                    </div>
+                    <div class="col-md-3"> Hospiatal Name <br> <input type="text" value="<?php echo $sample->hospital_name; ?>" placeholder="Enter Hospital Name"  name= "hospital_name" required="required" class="form-control"/> </div>
+                    <div class="col-md-3">Hospiatal Reg Number <br><input type="text"  value="<?php echo $sample->hosp_reg_no; ?>" placeholder="Enter Hosp Reg #" name= "hosp_reg_no" class="form-control" required="required"/></div>
+                    <div class="col-md-3">Payment Method <br>
+                        <select class="form-control" id="payment_details" value="<?php echo $sample->payment_details; ?>"  name="payment_details" required="required">
+
+                            <option value="1">cash</option>
+                            <option value="2">-- not yet --</option>
+                        </select>
+                    </div>
+
+
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h3><u><br>Sample Details.</u></h3>
+
+
+
+
+                <div class="form-group">
+
+                    <div class="col-md-3"><br><br>Doctor Name<br> <input type="text" placeholder="Enter Doctor Name"  name= "doctor_name" class="form-control" required="required"/> </div>
+                    <div class="col-md-3"><br><br>Doctor Phone Number<br> <input type="text" placeholder="Enter Doctor Mobile Number"  name= "doctor_number" class="form-control" /> </div>
+                    <div class="col-md-3"><br><br>Material Submitted<br> <input type="text" placeholder="Enter Material submitted"  name= "material" class="form-control" required="required"/> </div>
+                    <div class="col-md-3" ><br><br> Fixative Type:
+                        <?php echo Form::select('fixative_id',array('0'=>'Please select a Fixative type')+Fixative::orderBy('id','ASC')->get()->lists('type','id'),'',array('class'=>'form-control','required'=>'requiered')); ?><br>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3"><br><br>CL Diagnosis <br>
+                        <input type="text" placeholder="Clinical diagnosis " name= "clinical_diagnosis" class="form-control"/> </div>
+                    <div class="col-md-3"><br><br>Condition <br>
+                        <select class="form-control" name="condition" required="required">
+                            <option value="">please select the condition of the sample</option>
+                            <option value="good">good</option>
+                            <option value="bad">bad</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" id="DataCat"><br> Investigation/Procedure(s)<br></label>
+                        <div class="col-md-6">
+                            <?php echo Form::select('procedure[]',array('0'=>'No Selected Investigation/Procedure(s)')+LabTest::where('testCategory_id', '=', 1)->get()->lists('name','id')+LabTest::where('testCategory_id', '=', 7)->get()->lists('name','id'),array('0'),array('url'=>'posts',"id"=>"my-select",'class'=>'form-control','required'=>'required', 'multiple'=>'multiple')); ?>
+
+                            <script>
+                                $(document).ready(function(){
+                                    $('#my-select').multiSelect();
+                                })
+                            </script>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3"><br><br>Date Taken <br>
+                        <input type="date" name= "date_taken" class="form-control" required="required"/>
+                    </div>
+                    <div class="col-md-3"><br><br>Date Received<br>
+                        <input type="date"  name= "date_received" required="required" class="form-control"/></div>
+
+                    <div class="col-md-3"><br><br>LNMP <br>
+                        <input type="date" name= "lnmp" class="form-control" />
+                    </div>
+                    <div class="col-md-3"><br><br>Request <br>
+                        <select class="form-control" name="request" required="required">
+                            <option value="routine">Routine</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div><br>
+
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <div class="form-group">
+                    <div class="col-md-6"><br><br>Attachment <br>
+                        <input type="file" name= "attachment" class="form-control" />
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="sep" style="height: 30px"></div>
+                <div class="col-md-9" style="margin-top: 30px;" >
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                    <a class="btn btn-danger" href="<?php echo url('sample'); ?>"> Cancel</a>
+                </div>
+            </div>
+            <!--     <div class="clear"></div>-->
+        </form>
+    </div>
+
+</section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

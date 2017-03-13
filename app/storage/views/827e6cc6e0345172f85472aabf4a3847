@@ -1,0 +1,50 @@
+<?php $__env->startSection('contents'); ?>
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        Sample Rejection for Sample <?php echo $sample->patient->firstName; ?> <?php echo $sample->patient->middleName; ?> <?php echo $sample->patient->lastName; ?>
+
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("sampleTest"); ?>'>
+            back to list <i class="fa fa-list"></i>
+        </a>
+    </header>
+    <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> <?php echo $sample->patient->firstName; ?> rejected.
+        </div>
+        <?php endif; ?>
+        <form action="<?php echo url('sample/reject'); ?>/<?php echo $sample->id; ?>"  method="post">
+
+            <div class="entry">
+                <?php foreach($errors->all() as $error): ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php endforeach; ?>
+
+                <div class="form-group">
+                    <div class="col-md-6" > Rejection Reason:<br><br>
+                        <?php echo Form::select('rejection_id',array('0'=>'Please select a rejection reason')+Rejection::orderBy('id','ASC')->get()->lists('reason','id'),'',array('class'=>'form-control','required'=>'requiered')); ?><br>
+                    </div>
+                </div>
+                 <input type="hidden"  value="<?php echo Auth::user()->id; ?>"  name= "user_id" class="form-control"/>
+
+                <hr><br>
+                <hr><br>
+                <div class="sep" style="height: 30px"></div>
+                <div class="col-md-6" style="margin-top: 30px;" >
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                    <a class="btn btn-danger" href="<?php echo url('queue'); ?>"> Cancel</a>
+                </div>
+            </div>
+            <!--     <div class="clear"></div>-->
+        </form>
+    </div>
+
+</section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

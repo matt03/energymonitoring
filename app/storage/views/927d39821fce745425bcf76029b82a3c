@@ -1,0 +1,119 @@
+<?php $__env->startSection('contents'); ?>
+
+    <section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+        <header class="panel-heading ">
+            Update  Patient Details
+            <a class="btn btn-success btn-xs pull-right " href='<?php echo url("patient"); ?>'>
+                back to list <i class="fa fa-list"></i>
+            </a>
+        </header>
+        <div class="panel-body" >
+            <?php if(isset($msg)): ?>
+                <div class="alert alert-success fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">x</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>SUCCESS!</strong> Patient <?php echo $msg; ?>.
+                </div>
+            <?php endif; ?>
+            <form action="<?php echo url('patientEdit'); ?>/<?php echo $patient->id; ?>" method="post">
+
+                <div class="entry" >
+                    <?php foreach($errors->all() as $error): ?>
+                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php endforeach; ?>
+                    <h4 class="centered">Demographic Details</h4>
+                    <div class="row">
+                        <div class="form-group" >
+                            <div class="col-md-4"> First Name
+                                <input type="text" value="<?php echo $patient->firstName; ?>"  name= "firstName" class="form-control"/> </div>
+                            <div class="col-md-4">Middle Name
+                                <input type="text"  value="<?php echo $patient->middleName; ?>" name= "middleName" class="form-control"/></div>
+                            <div class="col-md-4">Last Name
+                                <input type="text" value="<?php echo $patient->lastName; ?>"  name= "lastName" class="form-control"/> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4"><br>Gender
+                                <select class="form-control" name="gender">
+                                    <option value="<?php echo $patient->gender; ?>"><?php echo $patient->gender; ?></option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><br>Date of Birth
+                                <input type="date" value="<?php echo $patient->dob; ?>" name= "dob" class="form-control"/> </div>
+                            <div class="col-md-4"><br>Tribe
+                                <input type="text"   value="<?php echo $patient->tribe; ?>" name= "tribe" class="form-control"/></div>
+                            <div class="col-md-4"><br>Occupation
+                                <input type="text"  value="<?php echo $patient->occupation; ?>" name= "occupation" class="form-control"/></div>
+                        </div>
+                    </div> <hr>
+
+                    <h4 class="centered">Address Details</h4>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <<div class="col-md-4"><br>Region
+                                <select class="form-control" name="region" id="region">
+                                    <option value="<?php echo $patient->district->region->id; ?>"><?php echo $patient->district->region->region; ?></option>
+                                    <?php foreach($region as $region): ?>
+                                        <option value="<?php echo $region->id; ?>"><?php echo $region->region; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><br>District
+                                <select class="form-control" name="district" id="district">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><br>District
+                                <input type="text"  value="<?php echo $patient->district->district; ?>" name= "district" class="form-control"/>
+                            </div>
+                            <div class="col-md-4"><br>Village/Street
+                                <input type="text"  value="<?php echo $patient->street; ?>" name= "street" class="form-control"/></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-4"><br>Village Executive Office
+                                <input type="text"  value="<?php echo $patient->veo; ?>" name= "veo" class="form-control"/>
+                            </div>
+                            <div class="col-md-4"><br>Phone Number<br>
+                                <input type="text"  value="<?php echo $patient->phone_no; ?>" name= "phone_no" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top: 30px;" align="center">
+                            <button type="submit" name="submit" class="btn btn-primary">Update</button>
+                            <a class="btn btn-danger" href="<?php echo url('patient'); ?>"> Cancel</a>
+                        </div>
+                    </div>
+                </div>
+                <!--     <div class="clear"></div>-->
+            </form>
+        </div>
+        <script>
+            $(document).ready(function(){
+
+                $(function () {
+                    $('#region').on('change', function (e) {
+
+                        console.log(e);
+                        var region_id = e.target.value;
+
+                        // Ajax
+                        $.get('patientEdit?region_id=' + region_id, function (data) {
+                            //success data
+                            $('#district').empty();
+                            $.each(data, function (patientEdit, distObject) {
+                                $('#district').append('<option value =" ' + distObject.id + ' ">' + distObject.district + '</option>')
+                            });
+                        })
+
+                    });
+                })
+            })
+        </script>
+    </section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

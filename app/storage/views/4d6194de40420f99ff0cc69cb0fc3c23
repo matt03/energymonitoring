@@ -1,0 +1,136 @@
+<?php $__env->startSection('contents'); ?>
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        List of Pending Payment in Histopathology
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("payment/individual"); ?>'>
+            Individual List <i class="fa fa-plus"></i>
+        </a>
+    </header>
+    <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> Sample for <?php echo $cat->id; ?> <?php echo $msg; ?>.
+        </div>
+        <?php endif; ?>
+
+<div id="exTab1" class="container">
+    <ul  class="nav nav-pills">
+        <li class="active">
+            <a  href="#1a" data-toggle="tab">Organization</a>
+        </li>
+        <li><a href="#2a" data-toggle="tab">Individual</a>
+        </li>
+
+    </ul>
+
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="1a">
+            <table  class="display table table-bordered table-striped" >
+                <thead>
+                <?php $j=0; $i=0;  ?>
+                <tr>
+                <th>#</th>
+                <th>Particular Details</th>
+                <th>Total</th>
+                <th>cash</th>
+                <th>Balance</th>
+                <th>Action</th>
+                </thead>
+                <tbody>
+
+
+                <?php foreach($payment as $payment): ?>
+                <?php  $hospital = Hospital::find($payment->pid); ?>
+                <tr>
+
+                    <td><?php echo ++$j; ?></td>
+                    <td><?php echo $hospital->name; ?></td>
+                    <td><?php echo $payment->total; ?></td>
+                    <td><?php echo $payment->cash; ?></td>
+                    <td><?php echo $payment->balance; ?></td>
+                    <td class="table-condensed col-xs-pull-2" id="<?php echo $payment->pid; ?>">
+                        <div class="btn-group btn-group-xs" >
+
+                            <a class="btn btn-primary" title="payment details" href='<?php echo url("payment/hospital/{$payment->pid}"); ?>'>
+                                view payment details
+                            </a>
+                            <a class="btn btn-success"  title="view sample transaction" href='<?php echo url("transaction/{$payment->pid}"); ?>'>
+                                view transaction <i class="fa fa-angle-double-right"></i>
+                            </a>
+                        </div>
+                    </td>
+
+                </tr>
+                <?php endforeach; ?>
+                </tbody>
+
+            </table>
+        </div>
+        <div class="tab-pane" id="2a">
+            <table  class="display table table-bordered table-striped" id="dynamic-table">
+                <thead>
+                <?php $j=0;?>
+                <tr>
+                <th>#</th>
+                <th>Particular Details</th>
+                <th>Total</th>
+                <th>cash</th>
+                <th>Balance</th>
+                <th>Action</th>
+                </thead>
+                <tbody>
+                <?php foreach($paymentP as $payment): ?>
+                <?php  $patient = Patient::find($payment->pid); ?>
+                <tr>
+
+                    <td><?php echo ++$j; ?></td>
+                    <td><?php echo $patient->firstName; ?> <?php echo $patient->middleName; ?> <?php echo $patient->lastName; ?></td>
+                    <td><?php echo $payment->total; ?></td>
+                    <td><?php echo $payment->cash; ?></td>
+                    <td><?php echo $payment->balance; ?></td>
+
+                    <td class="table-condensed col-xs-pull-2" id="<?php echo $payment->id; ?>">
+                        <div class="btn-group btn-group-xs" >
+
+<!--                            <a class="btn btn-danger" title="edit payment " href='<?php echo url("payment/edit/{$payment->pid}"); ?>'>-->
+<!--                                <i class="fa fa-edit"></i>-->
+<!--                            </a>-->
+                            <a class="btn btn-primary" title="payment details" href='<?php echo url("payment/view/{$payment->pid}"); ?>'>
+                                payment Details
+                            </a>
+                            <a class="btn btn-success"  title="view sample transaction" href='<?php echo url("transaction/{$payment->pid}"); ?>'>
+                                view transaction <i class="fa fa-angle-double-right"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                </tbody>
+
+            </table>
+            <script type="text/javascript" src="<?php echo asset('assets/data-tables/DT_bootstrap.js'); ?>"></script>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+    </div>
+
+</section>
+
+
+
+<!--dynamic table initialization -->
+<script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

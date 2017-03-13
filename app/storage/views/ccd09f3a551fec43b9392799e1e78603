@@ -1,0 +1,251 @@
+<?php $__env->startSection('contents'); ?>
+    <section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+        <header class="panel-heading ">
+            Lab Investigation for  <?php echo $patient->firstName; ?> <?php echo $patient->lastName; ?>
+
+            <a class="btn btn-success btn-xs pull-right " href='<?php echo url("sampleQueue"); ?>'>
+                back to list <i class="fa fa-list"></i>
+            </a>
+        </header>
+        <form action="<?php echo url('labInvestigation'); ?>/<?php echo $patient->id; ?>" method="post">
+            <div class="entry">
+                <?php foreach($queue as $queue): ?>
+                    <?php if($queue->labTest->TestCategory->name == "Serology"): ?>
+                        <div class="row">
+                            <?php if($queue->labTest->name != "Hormone Analysis (T3,T4,TSH Progesterone,LH,FSH,AFP)"): ?>
+                                <div class="col-xs-6 col-sm-4">
+                                    <strong>Lab Test</strong><br>
+                                    <?php echo $queue->labTest->name; ?>
+
+                                </div>
+                                <div class="col-xs-6 col-sm-4">
+                                    Results  <br><textarea rows="1" cols="50" name="results" required="required" class="form-control" ></textarea>
+                                </div>
+                                <div class="col-xs-6 col-sm-4">
+                                    titre  <br><textarea rows="1" cols="50" name="titre"  class="form-control" ></textarea>
+                                </div>
+                            <?php endif; ?><hr>
+                            <?php /*End for serology test with titre*/ ?>
+                            <?php if($queue->labTest->name == "Hormone Analysis (T3,T4,TSH Progesterone,LH,FSH,AFP)"): ?>
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <strong>Lab Test</strong><br>
+                                    <?php echo $queue->labTest->name; ?>
+
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <strong>Results</strong> <br>
+                                        TSH <input type="text" name="TSH" class="form-control">
+                                        T3 <input type="text" name="T3" class="form-control">
+                                        T4 <input type="text" name="T4" class="form-control">
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <strong>Normal Range</strong><br><br>
+                                        0.32 - 5.2 miu/L <br><br><br>
+                                        0.6 - 2.1 ng/ml <br><br><br>
+                                        4.4 - 21.0 mg/dl
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php /* End for Serology with no titre*/ ?>
+                            <input type="hidden"  value="<?php echo Auth::user()->id; ?>" name= "user_id" class="form-control"/>
+                            </di>
+                        </div>
+                    <?php endif; ?>
+                    <?php /*End for Serology*/ ?>
+
+                    <?php if($queue->labTest->TestCategory->name == "Haematology"): ?>
+                        <div class="row">
+                            <?php /*display form for Haematoloy test if lab tests are not FBP and Peripheral Blood Smear and HB*/ ?>
+                            <?php if($queue->labTest->name != "FBP and Peripheral Blood Smear" && $queue->labTest->name != "HB"): ?>
+                                <div class="col-xs-6 col-sm-4 col-md-6">
+                                    <strong>lab Test</strong><br>
+                                    <?php echo $queue->labTest->name; ?>
+
+                                </div>
+                                <div class="col-xs-6 col-sm-4 col-md-6">
+                                    Results  <br><textarea rows="1" cols="50" name="results" required="required" class="form-control" ></textarea>
+                                </div>
+                                <input type="hidden"  value="<?php echo Auth::user()->id; ?>" name= "user_id" class="form-control"/>
+                        </div>
+                    <?php endif; ?>
+                    <?php /*End inside if*/ ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <?php /*End of display if testcategory is Haematology*/ ?>
+
+                <?php if($queue->labTest->TestCategory->name == "Parasitology"): ?>
+                    <div class="row">
+                        <h4 align="center"><?php echo $queue->labTest->testCategory->name; ?> Sample Request Form</h4>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?php if($queue->labTest->name == "Urinalysis"): ?>
+                                    <div class="col-md-6" style="">
+                                        <h5 align="center"> URINE - Microscopic Examination </h5><br>
+                                        <div class="row">
+                                            <div class="col-md-12">Color
+                                                <label class="radio-inline"> <input type="radio" name="color" value="Amber">Amber</label>
+                                                <label class="radio-inline"> <input type="radio" name="color" value="Yellow">Yellow</label>
+                                                <label class="radio-inline"> <input type="radio" name="color" value="Pale Yellow">Pale Yellow</label>
+                                                <label class="radio-inline"> <input type="radio" name="color" value="Milky White">Milky White</label>
+                                            </div>
+                                            <div class="col-md-12">Turbidity
+                                                <label class="radio-inline"> <input type="radio" name="turbidity" value="Cloudy">Cloudy</label>
+                                                <label class="radio-inline"> <input type="radio" name="turbidity" value="Clear">Clear</label>
+                                            </div>
+                                        </div><br>
+                                        <div class="row">
+                                            <div class="col-md-4">Deposits <br><input type="text" name= "deposits" class="form-control" /></div>
+                                            <div class="col-md-8">Others <br><textarea rows="1" cols="20" name="other_first"  class="form-control" ></textarea></div>
+                                        </div><br>
+                                        <div class="row">
+                                            <div class="col-md-4">WBC <br><input type="text" name= "wcb" class="form-control" /></div>
+                                            <div class="col-md-4">RBC<br><input type="text" name= "rbc_urine" class="form-control" /></div>
+                                            <div class="col-md-4">Epithelial Cells<br><input type="text" name= "epithelial" class="form-control" /></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">Casts <br> <input type="text" name= "casts" class="form-control" /></div>
+                                            <div class="col-md-4">Crystals <br> <input type="text" name= "crystals" class="form-control" /></div>
+                                            <div class="col-md-4">Parasites <br> <input type="text" name= "parasites_urine" class="form-control" /></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">Others <br> <textarea rows="1" cols="20" name="other_second"  class="form-control" ></textarea></div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                                <?php /*End Displays if lab test is Urinalysis*/ ?>
+                                <?php if($queue->labTest->name == "Stool Analysis"): ?>
+                                    <div class="col-md-6" style="">
+                                        <h5 align="center"> STOOL - Microscopic Examination </h5><br>
+                                        <div class="row">
+                                            <div class="col-md-12">Consistency
+                                                <label class="radio-inline"> <input type="radio" name="consistency" value="formed">Formed</label>
+                                                <label class="radio-inline"> <input type="radio" name="consistency" value="Semi formed">Semi formed</label>
+                                                <label class="radio-inline"> <input type="radio" name="consistency" value="Watery">Watery</label>
+                                            </div>
+                                        </div><br><br>
+                                        <div class="row">
+                                            <div class="col-md-4">Mucus <br><input type="text" name= "mucus" class="form-control" /></div>
+                                            <div class="col-md-4">Blood Stained <br><input type="text" name= "blood_stain" class="form-control" /></div>
+                                            <div class="col-md-4">Appearance <br><input type="text" name= "blood_stain" class="form-control" /></div>
+                                        </div>
+                                        <div class="row"><div class="col-md-6">Others <textarea rows="1" cols="20" name="other_third"  class="form-control" ></textarea></div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-4">Parasites <input type="text" name= "parasites_stool" class="form-control" /></div>
+                                            <div class="col-md-4">Ova <input type="text" name= "ova" class="form-control" /></div>
+                                            <div class="col-md-4">Cysts <input type="text" name= "cysts" class="form-control" /></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">Pus cells <input type="text" name= "pus" class="form-control" /></div>
+                                            <div class="col-md-4">Rbc <input type="text" name= "rbc_stool" class="form-control" /></div>
+                                            <div class="col-md-4">Others <textarea rows="1" cols="20" name="other_fourth"  class="form-control" ></textarea></div>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
+                                    <?php /*End display if lab test is stool analysis*/ ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php if($queue->labTest->name == "Stool Occult Blood"): ?>
+                                    <div class="col-md-6"> Occult Blood Test
+                                        <label class="radio-inline"> <input type="radio" name="ocult" value="+">Positive</label>
+                                        <label class="radio-inline"> <input type="radio" name="ocult" value="-">Negative</label>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if($queue->labTest->name == "Urine Pregnancy Test(UPT)"): ?>
+                                    <div class="col-md-6">Urine Pregnancy Test
+                                        <label class="radio-inline"> <input type="radio" name="urine_preg" value="+">Positive</label>
+                                        <label class="radio-inline"> <input type="radio" name="urine_preg" value="-">Negative</label>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <?php if($queue->labTest->name == "BS for Haemolysis"): ?>
+                                <div class="col-md-6" align="center">
+                                    <h5> BLOOD SLIDE MICROSCOPY RESULT</h5><br>
+                                    <textarea rows="1" cols="5" name="blood"  class="form-control" ></textarea>
+                                </div>
+                            <?php endif; ?>
+
+                        </div>
+                    </div>
+                <?php endif; ?> 
+                    <?php /*display form for Haematoloy test if test is FBP and Peripheral Blood*/ ?>
+                <?php if($queue->labTest->TestCategory->name == "Haematology"): ?>
+                    <?php if($queue->labTest->name == "FBP and Peripheral Blood Smear"): ?>
+                        <div class="row">
+                            <h5 align="center"><strong><?php echo $queue->labTest->name; ?></strong></h5>
+                            <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <h6>Red Blood cell Morphology</h6>
+                                    Size <input type="text" name="size" class="form-control">
+                                    Shape <input type="text" name="shape" class="form-control">
+                                    Pattern of Staining <input type="text" name="pattern" class="form-control">
+                                </div>
+                                <div class="col-md-8">
+                                    Platelets <br>
+                                    <div class="col-md-6">
+                                        Number <br>
+                                        <label class="radio-inline"> <input type="radio" name="number" value="Normal">Normal</label><br>
+                                        <label class="radio-inline"> <input type="radio" name="number" value="Increased">Increased</label><br>
+                                        <label class="radio-inline"> <input type="radio" name="number" value="Decreased">Decreased</label>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        Morphology <br>
+                                        <label class="radio-inline"> <input type="radio" name="morphology" value="Normal">Normal</label><br>
+                                        <label class="radio-inline"> <input type="radio" name="morphology" value="Enlarged">Enlarged</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    Other Comments <textarea name="comments" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <di class = "col-md-6">
+                                <h6>White Blood Cells</h6><br>
+                                <div class="col-md-6">
+                                    Number <br>
+
+                                    Neutraphil <input type="text" name="neutraphil" class="form-control">
+                                    Lymphocytes <input type="text" name="lymphocytes" class="form-control">
+                                    Monocytes<input type="text" name="monocytes" class="form-control">
+                                    Eosinophiles<input type="text" name="eosinophiles" class="form-control">
+                                    Basophiles<input type="text" name="basophiles" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    Morphology <br>
+                                    <label> <input type="checkbox" name="neutrophilia" value="1">Neutrophilia</label><br>
+                                    <label> <input type="checkbox" name="left_shift" value="1">Left Shift</label><br>
+                                    <label>  <input type="checkbox" name="monocytosis" value="1">Monocytosis</label><br>
+                                    <label> <input type="checkbox" name="toxic" value="1">Toxic granulation</label><br>
+                                    <label> <input type="checkbox" name="lympho" value="1">Lymphocytosis</label><br>
+                                    <label>  <input type="checkbox" name="hypersegment" value="1">Hypersegmentation</label><br>
+                                    <label> <input type="checkbox" name="abnormal" value="1">Abnormal appearing cells</label>
+
+                                </div>
+                            </di>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?> <hr>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="col-lg-2">Lab Comments </div>
+                        <div class="col-md-10"> <textarea rows="1" cols="20" name="labcomments"  class="form-control" ></textarea></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" align="center" style="margin-top: 30px;" >
+                <button type="submit" name="submit" class="btn btn-primary">Save Results</button>
+                <a class="btn btn-danger" href="<?php echo url('sampleTest'); ?>"> Cancel</a>
+            </div>
+        </form>
+
+        </div>
+        </div>
+
+    </section>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

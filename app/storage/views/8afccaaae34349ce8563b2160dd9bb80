@@ -1,0 +1,66 @@
+<?php $__env->startSection('contents'); ?>
+
+    <section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+        <header class="panel-heading ">
+            Setting Price for hospital
+            <a class="btn btn-success btn-xs pull-right " href='<?php echo url("price"); ?>'>
+                back to list <i class="fa fa-list"></i>
+            </a>
+        </header>
+        <div class="panel-body" >
+            <?php if(isset($msg)): ?>
+                <div class="alert alert-success fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">x</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>SUCCESS!</strong> Hospital Price for <?php echo $price->hospital->name; ?> <?php echo $msg; ?>.
+                </div>
+            <?php endif; ?>
+            <form action="<?php echo url('price/add'); ?>" method="post">
+
+                <div class="entry" >
+                    <?php foreach($errors->all() as $error): ?>
+                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php endforeach; ?>
+
+                    <div class="row">
+                        <div class="form-group" >
+                            <div class="col-md-4"> Hospital Name <br><br>
+                                <?php echo Form::select('hospital',array('0'=>'Please select a hospital Name')+Hospital::orderBy('id','ASC')->where('setting','=','n')->get()->lists('name','id'),'',array('class'=>'form-control','required'=>'required')); ?><br>
+                             </div>
+                        </div>
+
+                    </div> <hr>
+                    <?php foreach($procedure as $procedure): ?>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <?php echo $procedure->name; ?>
+
+                                <input type="hidden"  placeholder="Enter Amount Paid #" value="<?php echo $procedure->id; ?>" required="required" name= "procedure[]" class="form-control"/>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text"  placeholder="Enter Amount Paid #" required="required" name= "amount[]" class="form-control"/>
+
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                    <hr>
+                    <div class="sep" style="height: 10px"></div>
+                    <div class="col-md-6" style="margin-top: 30px;" >
+                        <button type="submit" name="submit" class="btn btn-primary">Set</button>
+                        <a class="btn btn-danger" href="<?php echo url('price'); ?>"> Cancel</a>
+                    </div>
+
+
+                        </div>
+                <!--     <div class="clear"></div>-->
+            </form>
+        </div>
+
+    </section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

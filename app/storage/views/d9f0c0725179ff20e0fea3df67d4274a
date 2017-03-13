@@ -1,0 +1,124 @@
+<?php $__env->startSection('contents'); ?>
+<link href="<?php echo asset('css/style.css'); ?>" rel="stylesheet">
+<link href="<?php echo asset('css/style-responsive.css'); ?>" rel="stylesheet" />
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        Add Results for Sample <?php echo $cat[0]->name; ?>
+
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("sampleTest"); ?>'>
+            back to list <i class="fa fa-list"></i>
+        </a>
+    </header>
+    <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> <?php echo $cat[0]->name; ?> description addition.
+        </div>
+        <?php endif; ?>
+        <form action="<?php echo url('sampleTest/result'); ?>/<?php echo $cat[0]->id; ?>"  method="post">
+
+            <div class="entry">
+                <?php foreach($errors->all() as $error): ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php endforeach; ?>
+
+                <div class="form-group">
+
+                    <div class="col-md-5"> Microscopically <br><br><textarea rows="6" cols="70" name="description" required="required" class="form-control" ></textarea> </div>
+
+                    <div class="col-md-4"><h4> Definite Diagnosis:
+                       <button class="btn-success btn btn-xs pull-right" id="addColumn">+ Add</button></h4><br><br>
+                       <select name="data1" required="required" class="form-control">
+                           <option value="0"> Please select a Diagnosis </option>
+
+                           <?php foreach(Diagnosis::all() as $diagnosis): ?>
+                           <option value="<?php echo $diagnosis->id; ?>" id="option" ><?php echo $diagnosis->name; ?> </option>
+                           <?php endforeach; ?>
+                       </select>
+                        </h4>
+
+                    </div>
+
+
+                    <div class="col-md-3"> Elaboration<br><br><textarea rows="3" cols="30" name="elaboration" required="required" class="form-control" ></textarea> </div>
+
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                <div class="col-md-3"> Result Date: <br><br>
+                    <input type="date" placeholder="Enter Hosp Reg #" min='1899-01-01' max='2000-13-13' required="required" name= "date" class="form-control"/> </div>
+                <div class="col-md-5"> Comments <br><br>
+                    <textarea rows="6" cols="70" name="comment" required="required" class="form-control" >
+                       <?php if($cat[0]->comments): ?> <?php echo $cat[0]->comments; ?> <?php endif; ?>
+                    </textarea>
+                </div>
+                    <input type="hidden"  value="<?php echo Auth::user()->id; ?>" placeholder="Enter Hosp Reg #"  name= "user_id" class="form-control"/>
+                </div>
+                <br>
+                <br>
+
+                <div class="col-md-6" style="margin-top: 30px;" >
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                    <a class="btn btn-danger" href="<?php echo url('sampleTest'); ?>"> Cancel</a>
+                </div>
+            </div>
+            <!--     <div class="clear"></div>-->
+        </form>
+    </div>
+
+</section>
+<script>
+    $(function(){
+        $('[type="date"]').prop('max', function(){
+            return new Date().toJSON().split('T')[0];
+        });
+    });
+</script>
+<script src='jquery-1.9.1.min.js'></script>
+<script src="<?php echo asset('jquery-1.9.1.min.js'); ?>"></script>
+<script src="<?php echo asset('js/jquery.js'); ?>"></script>
+<script src="<?php echo asset('js/bootstrap.min.js'); ?>"></script>
+<script src="<?php echo asset('js/jquery.scrollTo.min.js'); ?>"></script>
+<script src="<?php echo asset('js/jquery.nicescroll.js'); ?>"></script>
+<script src="<?php echo asset('js/respond.min.js'); ?>"></script>
+<script src="<?php echo asset('js/jquery.stepy.js'); ?>"></script>
+
+
+<script src="<?php echo asset('css/style.css'); ?>"></script>
+<script src="<?php echo asset('css/style-responsive.css'); ?>"></script>
+<script src="<?php echo asset('css/styles/colors.css'); ?>"></script>
+<script>
+
+
+    $(function() {
+        var ids = 1;
+        $('.addColumn').click(function(){
+            ids++;
+            var column ='<div class="form-group">';
+            column+='<div class="col-md-4">';
+            column+='<select name="data'+ids+'class="form-control">';
+            column+="<?php foreach(Diagnosis::all() as $data): ?>";
+            column+='<option value="<?php echo $data->id; ?>" ><?php echo $data->name; ?></option>';
+            column+="<?php endforeach; ?>";
+            column+="</select>";
+            column+="</div>";
+            column+="</div>";
+
+            $(this).parent().parent().append(column);
+
+
+
+        };
+
+
+    });
+
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

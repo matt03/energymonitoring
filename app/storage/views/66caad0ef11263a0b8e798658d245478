@@ -1,0 +1,85 @@
+<div id="sidebar"  class="nav-collapse ">
+    <!-- sidebar menu start-->
+    <ul class="sidebar-menu" id="nav-accordion">
+        <li>
+            <a  href="<?php echo url('dashboard'); ?>"> <i class="fa fa-book"></i>Dashboard</a>
+        </li>
+        <li>
+            <?php if((Auth::user()->role == "4")): ?>
+            <a  href="<?php echo url('user'); ?>">
+                <i class="fa fa-user"></i>
+                <span>User</span>
+            </a>
+            <?php endif; ?>
+        </li>
+        <li class="sub-menu">
+            <a href="javascript:;" >
+                <i class="fa fa-th-large"></i>
+                <span>Patient</span>
+            </a>
+            <ul class="sub">
+                <li><a  href="<?php echo url('patient'); ?>">Patient List</a></li>
+                <li><a  href="<?php echo url('patientAdd'); ?>">Register new Patient</a></li>
+                <li><a  href="<?php echo url('diagnosis'); ?>">Diagnosis</a></li>
+
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a href="javascript:;" >
+                <i class="fa fa-medkit"></i>
+                <span>Laboratory</span>
+            </a>
+            <ul class="sub">
+                <li><a  href="<?php echo url('sampleQueue'); ?>">Labtests Queue</a></li>
+                <li><a  href="<?php echo url('lab'); ?>">Tests Descriptions</a></li>
+
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a href="javascript:;" >
+                <i class="fa fa-edit"></i>
+                <span>Payment</span>
+            </a>
+            <ul class="sub">
+                <li><a  href="<?php echo url('payment'); ?>">Histopathology</a></li>
+                <li><a  href="<?php echo url('payment'); ?>">OPD</a></li>
+
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a  href="javascript:;">
+                <i class="fa fa-user"></i>
+                <span>Histopathology</span>
+            </a>
+                <ul class="sub">
+                    <li><a  href="<?php echo url('sample'); ?>">Registration</a></li>
+                    <?php if(!(Auth::user()->role == "3")): ?>
+                    <li><a  href="<?php echo url('queue'); ?>">Sample Queue</a></li>
+                    <li><a  href="<?php echo url('sampleTest'); ?>">Laboratory</a></li>
+                    <?php endif; ?>
+                </ul>
+
+        </li>
+
+
+        <li>
+            <a  href="<?php echo url('dashboard'); ?>">
+                <i class="fa fa-user"></i>
+                <span>Report</span>
+            </a>
+        </li>
+        <li class="sub-menu">
+            <a href="javascript:;" >
+                <i class="fa fa-th-large"></i>
+                <span>Settings</span>
+            </a>
+            <ul class="sub">
+                <li><a  href="<?php echo url('patient'); ?>">Hospital</a></li>
+<!--                <li><a  href="<?php echo url('patientAdd'); ?>">Register new Patiet</a></li>-->
+
+            </ul>
+        </li>
+
+    </ul>
+    <!-- sidebar menu end-->
+</div>

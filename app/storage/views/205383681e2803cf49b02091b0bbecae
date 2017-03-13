@@ -1,0 +1,98 @@
+<?php $__env->startSection('contents'); ?>
+
+
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        List of Pending Payment in Histopathology
+
+    </header>
+    <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> Sample for <?php echo $cat->id; ?> <?php echo $msg; ?>.
+        </div>
+        <?php endif; ?>
+        <table  class="display table table-bordered table-striped" id="dynamic-table">
+            <thead>
+            <?php $j=0;?>
+            <tr>
+            <th>#</th>
+            <th>Particular Details</th>
+            <th>Total</th>
+            <th>cash</th>
+            <th>Balance</th>
+            <th>Status</th>
+            <th>Action</th>
+            </thead>
+            <tbody>
+            <?php foreach($payment as $payment): ?>
+            <tr>
+
+                <td><?php echo ++$j; ?></td>
+                <?php if($payment->type == "individual"): ?>
+                <td><?php echo $payment->patient->firstName; ?> <?php echo $payment->patient->middleName; ?> <?php echo $payment->patient->lastName; ?></td>
+                <?php endif; ?>
+                <?php if($payment->type == "organization"): ?>
+                <td><?php echo $payment->patient->firstName; ?> <?php echo $payment->patient->middleName; ?> <?php echo $payment->patient->lastName; ?></td>
+                <?php endif; ?>
+                <td><?php echo $payment->total; ?></td>
+                <td><?php echo $payment->cash; ?></td>
+                <td><?php echo $payment->balance; ?></td>
+                <td><?php echo $payment->status; ?></td>
+
+                <td class="table-condensed col-xs-pull-2" id="<?php echo $payment->id; ?>">
+                    <div class="btn-group btn-group-xs" >
+
+                        <a class="btn btn-primary" title="payment of Sample" href='<?php echo url("payment/add/{$payment->id}"); ?>'>
+                            payment
+                        </a>
+
+                        <a class="btn btn-success"  title="view sample transaction" href='<?php echo url("transaction/{$payment->id}"); ?>'>
+                            view transaction <i class="fa fa-angle-double-right"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+
+        </table>
+    </div>
+
+</section>
+
+
+
+    <script>
+        $(document).ready(function(){
+            $(".deletelevel").click(function(){
+                var id1 = $(this).parent().parent().attr('id');
+                $(".deletelevel").show("slow").parent().parent().parent().find("span").remove();
+                var btn = $(this).parent().parent().parent();
+                $(this).hide("slow").parent().parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
+                $("#no").click(function(){
+                    $(this).parent().parent().find(".deletelevel").show("slow");
+                    $(this).parent().parent().find("span").remove();
+                });
+                $("#yes").click(function(){
+                    $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
+                    $.post("<?php echo url('sample/delete') ?>/"+id1,function(data){
+                        data
+                        btn.hide("slow").next("hr").hide("slow");
+                    });
+                });
+            });//endof deleting category
+        })
+    </script>
+
+    <!--dynamic table initialization -->
+    <script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

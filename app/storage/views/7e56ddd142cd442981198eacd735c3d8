@@ -1,0 +1,35 @@
+<?php $__env->startSection('contents'); ?>
+    <th align="center"> <b>PATIENT DIAGNOSIS FORM</b></th><hr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">Patient Name</div> <div class="col-md-8"><?php echo $patient->firstName; ?> <?php echo $patient->lastName; ?></div>
+                <div class="col-md-4">Date of Birth</div>  <div class="col-md-8"><?php echo $patient->dob; ?></div>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-4">Tribe</div>  <div class="col-md-8"><?php echo $patient->tribe; ?></div>
+            <div class="col-md-4">sex</div>  <div class="col-md-8"><?php echo $patient->gender; ?></div>
+            <div class="col-md-4">LNMP</div>  <div class="col-md-8">LNMP</div>
+        </div>
+    </div><hr>
+    <div class="row">
+        <form action="<?php echo url('diagnosisGeneral/add'); ?>" method="post">
+            <div class="form-group">
+                <div class="col-md-6"> Clinica examination <br>
+                    <textarea name="notes" cols="50" rows="10" name= "sample_description" class="form-control"></textarea>
+                </div>
+                <div class="col-md-6">Diagnosis <br>
+                    <input type="textarea"  placeholder="Enter Diagnosis" name= "diagnostic_results" class="form-control"/></div>
+                <input type="hidden" value="<?php echo $patient->id; ?>" name="sample_id"/>
+                <div class="form-group"><br>
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                    <a class="btn btn-danger" href="<?php echo url('diagnosis'); ?>"> Cancel</a>
+                </div>
+            </div>
+            <!--     <div class="clear"></div>-->
+        </form>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

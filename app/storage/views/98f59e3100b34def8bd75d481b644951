@@ -1,0 +1,65 @@
+<?php $__env->startSection('contents'); ?>
+    <th align="center"> <b>PATIENT DIAGNOSIS FORM</b></th><hr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">Patient Name</div> <div class="col-md-8"><?php echo $patient->firstName; ?> <?php echo $patient->lastName; ?></div>
+                <div class="col-md-4">Date of Birth</div>  <div class="col-md-8"><?php echo $patient->dob; ?></div>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-4">Tribe</div>  <div class="col-md-8"><?php echo $patient->tribe; ?></div>
+            <div class="col-md-4">sex</div>  <div class="col-md-8"><?php echo $patient->gender; ?></div>
+        </div>
+    </div><hr>
+    <div class="row">
+        <form action="<?php echo url('diagnosisGeneral/add'); ?>" method="post">
+            <div class="form-group">
+                <div class="col-md-12"> Clinica History andexamination <br>
+                    <textarea name="notes" cols="50" rows="10" name= "sample_description" class="form-control"></textarea>
+                </div>
+            </div>
+             <div class="form-group">
+                 <div class="dropdown col-md-3" >
+                     Select test Category<br>
+                     <button onclick="myFunction()" class="dropbtn">Select</button>
+                     <div id="myDropdown" class="dropdown-content">
+                         <a href="#">Link 1</a>
+                         <a href="#">Link 2</a>
+                         <a href="#">Link 3</a>
+                     </div>
+                 </div>
+                <div class="form-group"><br>
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                    <a class="btn btn-danger" href="<?php echo url('opd'); ?>"> Cancel</a>
+                </div>
+            </div>
+            <!--     <div class="clear"></div>-->
+        </form>
+    </div>
+<?php $__env->stopSection(); ?>
+<script>
+    /* When the user clicks on the button,
+     toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

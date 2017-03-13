@@ -1,0 +1,136 @@
+<?php $__env->startSection('contents'); ?>
+
+    <section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+        <header class="panel-heading ">
+            Register Patient
+            <a class="btn btn-success btn-xs pull-right " href='<?php echo url("patient"); ?>'>
+                back to list <i class="fa fa-list"></i>
+            </a>
+        </header>
+        <div class="panel-body" >
+            <?php if(isset($msg)): ?>
+                <div class="alert alert-success fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">x</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>SUCCESS!</strong> Patient <?php echo $msg; ?>.
+                </div>
+            <?php endif; ?>
+            <form action="<?php echo url('patientAdd'); ?>" method="post">
+
+                <div class="entry" >
+                    <?php foreach($errors->all() as $error): ?>
+                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php endforeach; ?>
+                        <h4 class="centered">Demographic Details</h4>
+                    <div class="row">
+                        <div class="form-group" >
+                            <div class="col-md-4"> First Name
+                                <input type="text" placeholder="Enter First Name"  name= "firstName" class="form-control" required="required"/> </div>
+                            <div class="col-md-4">Middle Name
+                                <input type="text"  placeholder="Enter Middle Name" name= "middleName" class="form-control" ></div>
+                            <div class="col-md-4">Last Name
+                                <input type="text" placeholder="Enter Last Name"  name= "lastName" class="form-control" required="required"/> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4"><br>Gender
+                                <select class="form-control" name="gender" required="required">
+                                    <option value=""></option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><br>Date of Birth
+                                <input type="date" placeholder="date of birth " min='1899-01-01' max='2000-13-13' name= "dob" class="form-control" required="required"/> </div>
+                            <div class="col-md-4"><br>Tribe
+                                <input type="text"  name= "tribe" class="form-control"/></div>
+                            <div class="col-md-4"><br>Occupation
+                                <input type="text"  name= "occupation" class="form-control"/></div>
+                        </div>
+                    </div> <hr>
+
+                        <h4 class="centered">Address Details</h4>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-4"><br>Region
+                                    <select class="form-control" name="region" id="region">
+                                        <option value=""></option>
+                                        <?php foreach($region as $region): ?>
+                                            <option value="<?php echo $region->id; ?>"><?php echo $region->region; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                            <div class="col-md-4"><br>District
+                                <select class="form-control" name="district" id="district">
+                                <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4"><br>Village/Street
+                                <input type="text"  name= "street" class="form-control"/></div>
+                             </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-4"><br>Village Executive Office
+                                    <input type="text"  name= "veo" class="form-control"/>
+                                </div>
+                                <div class="col-md-4"><br>Phone Number
+                                    <input type="text"  name= "phone_no" class="form-control"/>
+                                </div>
+                                <div class="col-md-4"><br>Select Payment
+                                    <select class="form-control" name="payment">
+                                        <option value=""></option>
+                                        <option value="cash">Cash</option>
+                                        <option value="other">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 30px;" align="center">
+                                <button type="submit" name="submit" class="btn btn-primary">Register</button>
+                                <a class="btn btn-danger" href="<?php echo url('patient'); ?>"> Cancel</a>
+                            </div>
+                        </div>
+                        </div>
+                <!--     <div class="clear"></div>-->
+            </form>
+        </div>
+            <script>
+                $(document).ready(function() {
+                    $('select[name=stakeholder]').change(function () {
+
+                        $.post('<?php echo url("patient/listStakeholderBranch") ?>/' + $(this).val(), function (data) {
+                            $('select[name=stakeholderBranch]').html(data)
+                        });
+                    })
+                    $(function () {
+                        $('#region').on('change', function (e) {
+
+                            console.log(e);
+                            var region_id = e.target.value;
+
+                            // Ajax
+                            $.get('districtAdd?region_id=' + region_id, function (data) {
+                                //success data
+                                $('#district').empty();
+                                $.each(data, function (patientAdd, distObject) {
+                                    $('#district').append('<option value =" ' + distObject.id + ' ">' + distObject.district + '</option>')
+                                });
+                            })
+
+                        });
+                    })
+                })
+            </script>
+    </section>
+    <script>
+        $(function(){
+            $('[type="date"]').prop('max', function(){
+                return new Date().toJSON().split('T')[0];
+            });
+        });
+    </script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

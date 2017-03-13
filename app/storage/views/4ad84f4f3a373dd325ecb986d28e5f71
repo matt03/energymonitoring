@@ -1,0 +1,143 @@
+<?php $__env->startSection('contents'); ?>
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+       Report Details for patient <?php echo $sample->patient->firstName; ?> <?php echo $sample->patient->middleName; ?> <?php echo $sample->patient->lastName; ?>
+
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("sample"); ?>'>
+            back to list <i class="fa fa-list"></i>
+        </a>
+    </header>
+    <br>
+    <br>
+    <table  class="display table table-bordered table-striped" >
+        <thead>
+
+        <tr>
+            <th>Safe Focus Sample Report</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td>
+      <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> Patient <?php echo $msg; ?>.
+        </div>
+        <?php endif; ?>
+
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Hospital:     </b>  <?php echo $sample->hospital_name; ?></div>
+            <div class="col-md-3"><b>Hosp Reg No: </b>  <?php echo $sample->hosp_reg_no; ?></div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Doctor: </b>  <?php echo $sample->doctor_name; ?></div>
+            <div class="col-md-3"><b>Safe Focus ID: </b>  <?php echo $sample->sample_test_Id; ?></div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Mat Submitted: </b>  <?php echo $sample->material; ?></div>
+            <div class="col-md-3"><b>Patient Name: </b>  <?php echo $sample->patient->firstName; ?> <?php echo $sample->patient->middleName; ?> <?php echo $sample->patient->lastName; ?></div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Procedure: </b>  <?php echo $sample->procedure->name; ?></div>
+            <div class="col-md-3"><b>Date of Birth: </b>  <?php echo $sample->patient->dob; ?> </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Condition: </b>  <?php echo $sample->condition; ?></div>
+            <div class="col-md-3"><b>Age: </b>  <?php echo $sample->patient->dob; ?> </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Cl diagnosis: </b>  <?php echo $sample->clinical_diagnosis; ?></div>
+            <div class="col-md-3"><b>Ward: </b>  <?php echo $sample->patient->ward; ?> </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Date Taken: </b>  <?php echo $sample->date_taken; ?></div>
+            <div class="col-md-3"><b>Gender: </b>  <?php echo $sample->patient->gender; ?> </div>
+            <div class="col-md-3"><b>LMNP: </b>  <?php echo $sample->patient->LMNP; ?> </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4"><b>Date Received: </b>  <?php echo $sample->date_received; ?></div>
+            <div class="col-md-3"><b>Tribe: </b>  <?php echo $sample->patient->tribe; ?> </div>
+        </div>
+        <br><br>
+        <div class="col-md-12">
+            <div class="col-md-8"><b>Clinical History: </b>  <?php echo $sample->clinical_examination; ?></div><br><br>
+        </div>
+        <div class="col-md-12"><h5><b> Description: </b></h5></div>
+        <div class="col-md-12">
+            <div class="col-md-8">Macroscopically:<?php if($sample->sampleTest->macroscopically): ?> <?php echo $sample->sampleTest->macroscopically; ?> <?php endif; ?></div>
+            <br><br>
+            <div class="col-md-8">Microscopically <?php if($sample->sampleTest->microscopically): ?> <?php echo $sample->sampleTest->microscopically; ?> <?php endif; ?></div><br><br><br>
+        </div>
+        <br>
+        <br>
+        <div class="col-md-12"><h5><b> Diagnosis: </b></h5></div>
+        <div class="col-md-12">
+            <div class="col-md-8"><?php echo $sample->sampleTest->diagnosis->name; ?> <?php if($sample->sampleTest->elaboration): ?> <?php echo $sample->sampleTest->elaboration; ?> <?php endif; ?></div><br><br><br>
+
+        </div>
+        <div class="col-md-12"><h5><b> Comments: </b></h5></div>
+        <div class="col-md-12">
+            <div class="col-md-8"><?php if($sample->sampleTest->comments): ?><?php echo $sample->sampleTest->comments; ?> <?php endif; ?> </div><br><br><br>
+
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-3"><b>Dr Sign:</b><?php if($sample->sampleTest->doctor): ?> <?php echo $sample->sampleTest->doctor->firstName; ?> <?php echo $sample->sampleTest->doctor->middleName; ?> <?php echo $sample->sampleTest->doctor->lastName; ?><?php endif; ?> </div>
+            <div class="col-md-2"><b>Title:</b> <?php if($sample->sampleTest->doctor): ?><?php echo $sample->sampleTest->doctor->hasRole->specialized; ?> <?php endif; ?></div>
+            <div class="col-md-3"><b>Approved By:</b><?php if($sample->sampleTest->labTechnician): ?> <?php echo $sample->sampleTest->labTechnician->firstName; ?> <?php echo $sample->sampleTest->labTechnician->middleName; ?> <?php echo $sample->sampleTest->labTechnician->lastName; ?><?php endif; ?> </div>
+            <div class="col-md-2"><b>Title:</b><?php if($sample->sampleTest->labTechnician): ?> <?php echo $sample->sampleTest->labTechnician->hasRole->specialized; ?><?php endif; ?> </div><br><br>
+
+        </div>
+        <div class="col-md-12" >
+            <div class="col-md-12"><b>Report Date: </b><?php echo $sample->sampleTest->updated_at; ?> </div><br><br><br>
+
+        </div>
+        <div class="centered">
+            <button>
+                <a href='<?php echo url("sampleReport/{$sample->id}"); ?>' class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download Report </a>
+            </button>
+
+        </div>
+        </div></td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+        <table  class="display table table-bordered table-striped" >
+            <thead>
+
+            <tr>
+            <th>Attachment of Request</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+
+                <td>
+                    <img class="image img-responsive" src='<?php echo asset("reference/{$sample->attachment}"); ?>'/></td>
+
+                <td><button data-href="">
+                        <a href='<?php echo url("attachmentReport/{$sample->id}"); ?>' class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download Attachment </a>
+                    </button></td>
+             </tr>
+
+            </tbody>
+
+        </table>
+
+</section>
+<!--dynamic table initialization -->
+<script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,69 @@
+<?php $__env->startSection('contents'); ?>
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        Register Hospital
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("hospital"); ?>'>
+            back to list <i class="fa fa-list"></i>
+        </a>
+    </header>
+    <div class="panel-body" >
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> Hospital <?php echo $hospital->name; ?> <?php echo $msg; ?>.
+        </div>
+        <?php endif; ?>
+        <br><br>
+        <form action="<?php echo url('hospitalEdit'); ?>" method="post">
+
+            <div class="entry" >
+                <?php foreach($errors->all() as $error): ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php endforeach; ?>
+
+                <div class="row">
+                    <div class="form-group" >
+                        <div class="col-md-4"> Hospital Name<br><br>
+                            <input type="text" placeholder="Enter Hospital Name" value="<?php echo $hospital->name; ?>" name= "name" class="form-control" required="required"/> </div>
+                            <input type="text" placeholder="Enter Hospital Name" value="<?php echo $hospital->id; ?>" name= "id" class="form-control" required="required"/> </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="form-group">
+
+
+                        <div class="col-md-4"><br>District
+                            <select class="form-control" name="district" id="district">
+                                <option value="<?php echo $hospital->district->id; ?>"><?php echo $hospital->district->district; ?></option>
+                                <?php foreach($district as $district): ?>
+                                <option value="<?php echo $district->id; ?>"><?php echo $district->district; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <hr>
+            <div class="col-md-12" style="margin-top: 30px;" align="center">
+                <button type="submit" name="submit" class="btn btn-primary">Update</button>
+                <a class="btn btn-danger" href="<?php echo url('hospital'); ?>"> Cancel</a>
+            </div>
+
+
+
+    </div>
+    <!--     <div class="clear"></div>-->
+    </form>
+    </div>
+
+</section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,58 @@
+<?php $__env->startSection('contents'); ?>
+    <th align="center"> <b>PATIENT DIAGNOSIS FORM</b></th><hr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">Patient Name</div> <div class="col-md-8"><?php echo $patient->firstName; ?> <?php echo $patient->lastName; ?></div>
+                <div class="col-md-4">Date of Birth</div>  <div class="col-md-8"><?php echo $patient->dob; ?></div>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-4">Tribe</div>  <div class="col-md-8"><?php echo $patient->tribe; ?></div>
+            <div class="col-md-4">sex</div>  <div class="col-md-8"><?php echo $patient->gender; ?></div>
+        </div>
+    </div><hr>
+        <form action="<?php echo url('patient/opd'); ?>/<?php echo $patient->id; ?>" method="post">
+            <div class="row">
+            <div class="col-md-6"> <br>
+                <strong>Clinical History</strong>
+                <textarea name="history" cols="50" rows="9"  class="form-control"></textarea>
+            </div>
+                <input type="hidden" value="<?php echo $patient->id; ?>" name="patient_id">
+
+            <div class="col-md-6"><br>
+                <strong>Select Lab tests</strong>
+                <?php echo Form::select('labTest[]',array()+LabTest::orderBy('name','ASC')->get()->lists('name','id','price'),array('0'),array('url'=>'posts',"id"=>"my-select",'class'=>'form-control', 'multiple'=>'multiple')); ?>
+
+                <script>
+                    $(document).ready(function(){
+                        $('#my-select').multiSelect();
+                    })
+                </script>
+            </div>
+    </div><hr>
+        <div class="row">
+            <div class="col-md-12"></div> <h4><strong>Fill this Part if Patients is not sent to Lab</strong></h4></div>
+            <div class="col-md-6"> <br>
+                <strong>Prescriptions</strong>
+                <textarea name="prescription" cols="50" rows="3"  class="form-control"></textarea>
+                <input type="hidden" value="<?php echo $patient->id; ?>" name="patient_id">
+            </div>
+            <div class="col-md-6"> <br>
+                <strong>Comments</strong>
+                <textarea name="clinicalcomments" cols="50" rows="3"  class="form-control"></textarea>
+                <input type="hidden" value="" name="comments">
+            </div>
+        </div>
+
+            <div class="col-md-12" style="margin-top: 30px;" align="center">
+                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                <a class="btn btn-danger" href="<?php echo url('patient'); ?>"> Cancel</a>
+            </div>
+        </form>
+
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

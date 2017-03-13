@@ -1,0 +1,106 @@
+<?php $__env->startSection('contents'); ?>
+
+
+
+    <section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+        <header class="panel-heading ">
+            Diagnosis Results Form
+        </header><hr>
+        <div class="row">
+            <div class="col-md-6">
+                PATIENT SURNAME  <strong><?php echo $patient->lastName; ?></strong> <br>
+                OTHER NAMES   <strong><?php echo $patient->firstName; ?> <?php echo $patient->middleName; ?></strong> <br>
+                ADDRESS &nbsp; <strong>
+                                       <?php echo $patient->district->region->region; ?>,
+                                       <?php echo $patient->district->district; ?>,
+                                       <?php echo $patient->street; ?>
+
+                               </strong>
+                </div>
+            <div class="col-md-6">
+                PATIENT FILE NUMBER  <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        CLINIC &nbsp;  <strong>OPD</strong> <br>
+                        SEX  &nbsp;&nbsp; &nbsp;&nbsp;  <strong><?php echo $patient->gender; ?></strong>
+                    </div>
+                    <div class="col-md-6">
+                        DATE &nbsp;&nbsp;<strong><?php echo $patient->updated_at; ?></strong><br>
+                        AGE &nbsp;&nbsp;<strong>
+                             </strong>
+                    </div>
+                </div>
+            </div>
+        </div><hr>
+        <div class="row">
+            <div class="col-md-6">
+                <strong>CLINICAL DETAILS</strong>  <?php echo $patient->history; ?>
+
+                </strong>
+            </div>
+        </div><hr>
+
+        <form action="<?php echo url('diagnosis'); ?>/<?php echo $patient->id; ?>" method="post">
+
+            <div class="entry">
+                <?php foreach($errors->all() as $error): ?>
+                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php endforeach; ?>
+                <?php foreach($diagnosis as $diagnosis): ?>
+                    <?php if($diagnosis->labTest->testCategory->id = 3): ?>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-4"><br>
+                            <strong><?php echo $diagnosis->labTest->name; ?> <?php echo $diagnosis->labTest->testCategory->id; ?></strong>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            Result  <br><textarea rows="3" cols="50" name="diagnosis_result" required="required" class="form-control" ></textarea>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            Comments  <br><textarea rows="3" cols="50" name="clinicalcomments"  class="form-control" ></textarea>
+                        </div>
+                        <input type="hidden"  value="<?php echo Auth::user()->id; ?>" name= "user_id" class="form-control"/>
+                    </div>
+                        <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+            <hr>
+            <div class="col-md-12" align="center" style="margin-top: 30px;" >
+                <button type="submit" name="submit" class="btn btn-primary">Save Results</button>
+                <a class="btn btn-danger" href="<?php echo url('sampleTest'); ?>"> Cancel</a>
+            </div>
+        </form>
+
+
+        </div>
+
+    </section>
+
+
+
+    <script>
+        $(document).ready(function(){
+            $(".deletelevel").click(function(){
+                var id1 = $(this).parent().parent().attr('id');
+                $(".deletelevel").show("slow").parent().parent().parent().find("span").remove();
+                var btn = $(this).parent().parent().parent();
+                $(this).hide("slow").parent().parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
+                $("#no").click(function(){
+                    $(this).parent().parent().find(".deletelevel").show("slow");
+                    $(this).parent().parent().find("span").remove();
+                });
+                $("#yes").click(function(){
+                    $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
+                    $.post("<?php echo url('sample/delete') ?>/"+id1,function(data){
+                        btn.hide("slow").next("hr").hide("slow");
+                    });
+                });
+            });//endof deleting category
+        })
+    </script>
+
+    <!--dynamic table initialization -->
+    <script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

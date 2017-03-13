@@ -1,0 +1,84 @@
+<?php $__env->startSection('contents'); ?>
+
+
+
+<div class="panel panel-success">
+
+
+<div class="panel-heading">List of Patients<a href="<?php echo url('patientAdd'); ?>" class="btn btn-success btn-xs pull-right">
+        New patient <i class="fa fa-plus"></i> </a></div>
+    <?php if($alert = Session::get('alert-success')): ?>
+    <div class="alert alert-success">
+        <?php echo $alert; ?>
+
+    </div>
+    <?php endif; ?>
+    <div class="panel-body">
+
+<table  class="display table table-bordered table-striped" id="dynamic-table">
+<thead>
+<tr>
+    <th>Patient Name</th>
+    <th>Gender</th>
+    <th>Contacts</th>
+    <th>Action</th>
+</thead>
+<tbody>
+<?php foreach($patient as $patient): ?>
+<tr>
+
+    <td><?php echo $patient->firstName; ?> <?php echo $patient->middleName; ?> <?php echo $patient->lastName; ?></td>
+    <td><?php echo $patient->gender; ?></td>
+    <td><?php echo $patient->phone_no; ?></td>
+    <td class="table-condensed col-xs-pull-2">
+        <div class="btn-group btn-group-sm" >
+            <a href="<?php echo url('patient/follow_up'); ?>/<?php echo $patient->id; ?>" class="btn btn-primary" title="Follow Up">
+                <i class="fa fa-plus"></i>
+            </a>
+            <a href="<?php echo url('patientEdit'); ?>/<?php echo $patient->id; ?>" class="btn btn-info" title="edit">
+                <i class="fa fa-edit"></i>
+            </a>
+            <a class="btn btn-danger deletelevel" title="delete patient" href='#delete'>
+                <i class="fa fa-trash-o"></i>
+            </a>
+        </div>
+    </td>
+
+</tr>
+<?php endforeach; ?>
+
+</tbody>
+
+</table>
+</div>
+</div>
+
+
+
+<script>
+    $(document).ready(function(){
+        $(".deletelevel").click(function(){
+            var id1 = $(this).parent().parent().attr('id');
+            $(".deletelevel").show("slow").parent().parent().parent().find("span").remove();
+            var btn = $(this).parent().parent().parent();
+            $(this).hide("slow").parent().parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
+            $("#no").click(function(){
+                $(this).parent().parent().find(".deletelevel").show("slow");
+                $(this).parent().parent().find("span").remove();
+            });
+            $("#yes").click(function(){
+                $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
+                $.post("<?php echo url('patient/delete') ?>/"+id1,function(data){
+                    btn.hide("slow").next("hr").hide("slow");
+                });
+            });
+        });//endof deleting category
+    })
+</script>
+
+<!--dynamic table initialization -->
+<script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,106 @@
+<?php $__env->startSection('contents'); ?>
+
+
+
+<section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+    <header class="panel-heading ">
+        List of Sample Specimens in Histopathology
+        <a class="btn btn-success btn-xs pull-right " href='<?php echo url("sample/add"); ?>'>
+            New Sample <i class="fa fa-plus"></i>
+        </a>
+    </header>
+    <div class="panel-body">
+        <?php if(isset($msg)): ?>
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>SUCCESS!</strong> Patient <?php echo $cat->sample_test_Id; ?> <?php echo $msg; ?>.
+        </div>
+        <?php endif; ?>
+        <table  class="display table table-bordered table-striped" id="dynamic-table">
+            <thead>
+            <?php $j=0;?>
+            <tr>
+            <th>#</th>
+            <th>Patient Name</th>
+            <th>File Number</th>
+            <th>Sample ID</th>
+            <th>Procedure</th>
+            <th>Clinical Diagnosis</th>
+            <th>Received Date</th>
+            <th>Definite Diagnosis </th>
+            <th>Results Date</th>
+            <th>Payment Status</th>
+            <th>Action</th>
+            </thead>
+            <tbody>
+            <?php foreach($sample as $sample): ?>
+            <tr>
+
+                <td><?php echo ++$j; ?></td>
+                <td><?php echo $sample->patient->firstName; ?> <?php echo $sample->patient->middleName; ?> <?php echo $sample->patient->lastName; ?></td>
+                <td><?php echo $sample->hosp_reg_no; ?></td>
+                <td><?php echo $sample->sample_test_Id; ?></td>
+                <td><?php echo $sample->procedure->name; ?></td>
+                <td><?php echo $sample->clinical_diagnosis; ?></td>
+                <td><?php echo $sample->date_received; ?></td>
+                <td><?php if($sample->sampleTest->definite_diagnosis_id): ?><?php echo $sample->sampleTest->diagnosis->name; ?><?php endif; ?> </td>
+                <td><?php if($sample->sampleTest->definite_diagnosis_id): ?><?php echo $sample->sampleTest->updated_at; ?><?php endif; ?></td>
+                <td><?php echo $sample->payment->status; ?></td>
+                <td class="table-condensed col-xs-pull-2" id="<?php echo $sample->id; ?>">
+                    <div class="btn-group btn-group-xs" >
+
+                        <a class="btn btn-primary" title="edit Sample" href='<?php echo url("sample/edit/{$sample->id}"); ?>'>
+                            <i class="fa fa-edit"></i>
+                        </a>
+
+
+                        <a class="btn btn-danger deletelevel"  title="delete sample" href='#delete'>
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                        <a class="btn btn-success"  title="view sample report" href='<?php echo url("sample/report/{$sample->id}"); ?>'>
+                            <i class="fa fa-angle-double-right"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+
+        </table>
+    </div>
+
+</section>
+
+
+
+    <script>
+        $(document).ready(function(){
+            $(".deletelevel").click(function(){
+                var id1 = $(this).parent().parent().attr('id');
+                $(".deletelevel").show("slow").parent().parent().parent().find("span").remove();
+                var btn = $(this).parent().parent().parent();
+                $(this).hide("slow").parent().parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
+                $("#no").click(function(){
+                    $(this).parent().parent().find(".deletelevel").show("slow");
+                    $(this).parent().parent().find("span").remove();
+                });
+                $("#yes").click(function(){
+                    $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
+                    $.post("<?php echo url('sample/delete') ?>/"+id1,function(data){
+                        data
+                        btn.hide("slow").next("hr").hide("slow");
+                    });
+                });
+            });//endof deleting category
+        })
+    </script>
+
+    <!--dynamic table initialization -->
+    <script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

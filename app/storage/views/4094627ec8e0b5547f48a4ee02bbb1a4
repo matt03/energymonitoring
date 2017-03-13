@@ -1,0 +1,92 @@
+<?php $__env->startSection('contents'); ?>
+<link href="<?php echo asset('css/tooltipster.css'); ?>" rel="stylesheet" />
+
+<div class="panel panel-success">
+
+
+    <div class="panel-heading">Data types<a href="<?php echo url('datatype/add'); ?>" class="btn btn-success btn-xs pull-right">
+            New data type <i class="fa fa-plus"></i> </a></div>
+
+
+<?php if(isset($name)): ?>
+<h3 class="text-success"> <?php echo $name; ?></h3>
+<?php endif; ?>
+
+        <div class="panel-body">
+            <?php if($alert = Session::get('alert-success')): ?>
+            <div class="alert alert-success">
+                <?php echo $alert; ?>
+
+            </div>
+            <?php endif; ?>
+            <div class="panel-body">
+
+                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach(DataTypeDetails::all() as $type): ?>
+                    <tr>
+                        <td><?php echo $type->name; ?></td>
+                        <td class="table-condensed col-xs-pull-2">
+                            <div class="btn-group btn-group-xs" >
+                                <a href="<?php echo url('datatype/edit'); ?>/<?php echo $type->id; ?>" class="btn btn-info" title="edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a data-toggle="modal" class="open-DeleteDialog btn btn-danger" data-id="<?php echo $type->id; ?>" href="#deleteDialog" title="delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+
+
+    <!-- Delete modal -->
+
+    <div class="modal fade bs-example-modal-sm" id="deleteDialog" role="dialog" aria-hidden="true" style="padding-top: 20%" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-body">
+                <?php
+                $datatype_id = 'datatypeId';
+                ?>
+                <?php echo $__env->make('datatype.delete', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).on("click", ".open-DeleteDialog", function(){
+            var myId = $(this).data('id');
+            $(".modal-body #DeleteButton").attr("href","<?php echo url('datatype/delete'); ?>/"+myId);
+        });
+    </script>
+
+
+
+    <!--main content end-->
+    <!--script for this page only-->
+
+    <script src="<?php echo asset('js/dynamic_table_init.js'); ?>"></script>
+<!--    <script src="<?php echo asset('js/jquery.tooltipster.js'); ?>"></script>-->
+
+
+
+
+    <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

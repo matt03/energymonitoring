@@ -1,0 +1,75 @@
+<?php $__env->startSection('contents'); ?>
+
+    <section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+        <header class="panel-heading ">
+            Register Patient Vital Signs
+            <a class="btn btn-success btn-xs pull-right " href='<?php echo url("patient"); ?>'>
+                back to list <i class="fa fa-list"></i>
+            </a>
+        </header>
+        <div class="panel-body" >
+            <?php if(isset($msg)): ?>
+                <div class="alert alert-success fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">x</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>SUCCESS!</strong> Patient <?php echo $msg; ?>.
+                </div>
+            <?php endif; ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">Patient Name</div> <div class="col-md-8"><?php echo $patient->firstName; ?> <?php echo $patient->lastName; ?></div>
+                            <div class="col-md-4">Date of Birth</div>  <div class="col-md-8"><?php echo $patient->dob; ?></div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-4">Tribe</div>  <div class="col-md-8"><?php echo $patient->tribe; ?></div>
+                        <div class="col-md-4">sex</div>  <div class="col-md-8"><?php echo $patient->gender; ?></div>
+                    </div>
+                </div><hr>
+            <form action="<?php echo url('vital/add'); ?>/<?php echo $patient->id; ?>" method="post">
+
+                <div class="entry" >
+                    <?php foreach($errors->all() as $error): ?>
+                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php endforeach; ?>
+                    <h4 class="centered">Patient Vital signs</h4>
+                    <div class="row">
+                        <div class="form-group" >
+                            <div class="col-md-3"> Temperature
+                                <input type="text" placeholder="Temperature in Celsius"  name= "temperature" class="form-control" /> </div>
+                            <div class="col-md-3">Preasure
+                                <input type="text"  placeholder="Preasure mm/Hg" name= "preasure" class="form-control" ></div>
+                            <div class="col-md-3">Weight
+                                <input type="text" placeholder="Weight in Kg"  name= "weight" class="form-control" /> </div>
+                            <div class="col-md-3">Height
+                                <input type="text" placeholder="Hight in CM"  name= "height" class="form-control" /> </div>
+                            <input type="hidden"   name= "patient_id" value="<?php echo $patient->id; ?>" ></div>
+                        </div>
+                        <div class="col-md-12" style="margin-top: 30px;" align="center">
+                            <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                            <a class="btn btn-danger" href="<?php echo url('patient'); ?>"> Cancel</a>
+                            <a class="btn btn-info" href="<?php echo url('patient/clinical'); ?>/<?php echo $patient->id; ?>"> Skip</a>
+                        </div>
+                    </div>
+                </div>
+                <!--     <div class="clear"></div>-->
+            </form>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $('select[name=stakeholder]').change(function(){
+
+                    $.post('<?php echo url("patient/listStakeholderBranch") ?>/'+$(this).val(),function(data){
+                        $('select[name=stakeholderBranch]').html(data)
+                    });
+                })
+            })
+        </script>
+    </section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

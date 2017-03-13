@@ -1,0 +1,91 @@
+
+
+<?php $__env->startSection('contents'); ?>
+
+    <section class="panel panel-success" xmlns="http://www.w3.org/1999/html">
+        <header class="panel-heading ">
+            Register Sample Details for <?php echo $patient->lastName; ?> <?php echo $patient->firstName; ?>
+
+            <a class="btn btn-success btn-xs pull-right " href='<?php echo url("patient"); ?>'>
+                back to list <i class="fa fa-list"></i>
+            </a>
+        </header>
+        <div class="panel-body">
+            <?php if(isset($msg)): ?>
+                <div class="alert alert-success fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">x</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>SUCCESS!</strong> Patient <?php echo $msg; ?>.
+                </div>
+            <?php endif; ?>
+            <form action="<?php echo url('sample/add'); ?>" method="post">
+
+                <div class="entry">
+                    <?php foreach($errors->all() as $error): ?>
+                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php endforeach; ?>
+
+                    <div class="form-group">
+                        <div class="col-md-6"> Hospiatal Name <br> <input type="text" placeholder="Enter Hospital Name"  name= "hospital_name" class="form-control"/> </div>
+                        <div class="col-md-6">Hospital Reg : Number <br> <input type="text"  placeholder="Enter Hosp Reg #" name= "hosp_reg_no" class="form-control"/></div>
+                        <input type="hidden"  value="<?php echo $patient->id; ?>" name= "patient_id" />
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-6"><br><br>Doctor Name<br> <input type="text" placeholder="Enter Doctor Name"  name= "doctor_name" class="form-control"/> </div>
+                        <div class="col-md-6"><br><br>Material Submitted<br> <input type="text" placeholder="Enter Material submitted"  name= "material" class="form-control"/> </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6"><br><br>CL Diagnosis <br>
+                            <input type="text" placeholder="Clinical diagnosis " name= "clinical_diagnosis" class="form-control"/> </div>
+                        <div class="col-md-6"><br><br>Condition <br>
+                            <select class="form-control" name="condition">
+                                <option value=""></option>
+                                <option value="good">good</option>
+                                <option value="bad">bad</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6"><br><br>Date Received<br>
+                            <input type="text"  name= "date_received" class="form-control"/></div>
+                        <div class="col-md-6"><br><br>date Taken <br>
+                            <input type="text" placeholder="Enter date taken"name= "date_taken" class="form-control"/>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <div class="col-md-12"><br><br>Clinical History and Examination<br>
+                                <input type="textarea" placeholder="Enter Patient History"name= "clinical_examination" class="form-control"/>
+                            </div>
+                        </div>
+                    <hr><br>
+                        <hr><br>
+                        <div class="sep" style="height: 30px"></div>
+                        <div class="col-md-6" style="margin-top: 30px;" >
+                            <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                            <a class="btn btn-danger" href="<?php echo url('patient'); ?>"> Cancel</a>
+                        </div>
+                    </div>
+                <!--     <div class="clear"></div>-->
+            </form>
+        </div>
+            <script>
+                $(document).ready(function(){
+                    $('select[name=stakeholder]').change(function(){
+
+                        $.post('<?php echo url("patient/listStakeholderBranch") ?>/'+$(this).val(),function(data){
+                            $('select[name=stakeholderBranch]').html(data)
+                        });
+                    })
+                })
+            </script>
+    </section>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
